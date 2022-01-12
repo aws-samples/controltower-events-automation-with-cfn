@@ -72,7 +72,7 @@ Next, deploy the stack using the .yaml template in the repository.
 
 After the stack is created, you can review the deployed EventBridge rule in the EventBridge console (https://console.aws.amazon.com/events/home?region=us-east-1#/). The rule, which is named VPCTaggingHub-Rule, has the following event pattern:
 
-'''
+```json
 {
   "source": ["aws.controltower"],
   "detail-type": ["AWS Service Event via CloudTrail"],
@@ -80,7 +80,7 @@ After the stack is created, you can review the deployed EventBridge rule in the 
     "eventName": ["CreateManagedAccount"]
   }
 }
-'''
+```
 
 ### Step 4. Test the automation
 There are two methods to test the automation and demonstrate the tagging carried out by the AWS Lambda function. You can emulate a real-world scenario in which you provision an account using AWS Control Tower Account Factory. Or, you can run a test set using JSON parameters that would be passed as part of a typical CreateManagedAccount lifecycle event. In other words, you can manually invoke the AWS Lambda function to tag resources in an existing account. For this second option, you must have previously created an account with AWS Control Tower Account Factory.
@@ -105,7 +105,7 @@ Run the AWS Lambda function manually to tag resources in an existing AWS account
 5. Enter an event name (for example, test). 
 6. Copy and paste the following code into the body of the event. Replace <<MGMT_ACCOUNT_ID>> with the 12-digit account number for your management AWS account. Replace <<FIRST_ACCOUNT_ID>> with the account number of the AWS account that you want to tag.
 
-  '''
+```json
 {
   "detail-type": "AWS Service Event via CloudTrail",
   "source": "aws.controltower",
@@ -125,7 +125,7 @@ Run the AWS Lambda function manually to tag resources in an existing AWS account
     }
   }
 }
-  '''
+```
   
 7. Choose *Save changes*.
 8. Choose *Test*. The function can take 2–3 minutes to run, depending on the number of Regions with VPCs deployed with AWS Control Tower. Test results appear on the *Test* tab, with resources labeled by the function listed in the *Log output* field.
