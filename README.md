@@ -71,7 +71,7 @@ Next, deploy the stack using the .yaml template in the repository.
 ### Step 3. Review the EventBridge rule
 
 After the stack is created, you can review the deployed EventBridge rule in the EventBridge console (https://console.aws.amazon.com/events/home?region=us-east-1#/). The rule, which is named VPCTaggingHub-Rule, has the following event pattern:
-'''ruby
+''''
 {
   "source": ["aws.controltower"],
   "detail-type": ["AWS Service Event via CloudTrail"],
@@ -79,4 +79,4 @@ After the stack is created, you can review the deployed EventBridge rule in the 
     "eventName": ["CreateManagedAccount"]
   }
 }
-'''
+''''
