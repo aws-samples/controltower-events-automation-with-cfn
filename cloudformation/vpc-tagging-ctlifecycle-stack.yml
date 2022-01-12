@@ -9,7 +9,7 @@ Parameters:
 
   S3LambdaZipName: 
     Type: String
-    Description: Enter file name of Lambda Zip - i.e. ControlTowerLifeCycleEventLambda-AutomatedVPCTagging.zip 
+    Description: Enter file name of Lambda Zip - i.e. AutomatedTaggingLambda.zip 
 
 Resources:
 
