@@ -4,7 +4,7 @@
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
 
 ## License
-This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE.md) file.
+This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) file.
 
 ## Introduction
 When building an enterprise architecture for the cloud, customers often put much initial thought into ensuring they build a structure for success. In most cases, this consists of services like AWS Organizations (https://aws.amazon.com/organizations/) and AWS Control Tower (https://aws.amazon.com/controltower/), which deploy a foundation to support a scalable, multi-account structure. Into this foundation, you can automatically provision Amazon Web Services (AWS) accounts using AWS Control Tower Account Factory (https://docs.aws.amazon.com/controltower/latest/userguide/account-factory.html). But what about automated resource configuration in these new accounts? For example, can you automate manual tasks such as tagging (https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html) resources in virtual private clouds (VPCs)? With AWS Control Tower lifecycle events (https://docs.aws.amazon.com/controltower/latest/userguide/lifecycle-events.html) and Amazon EventBridge, the answer is yes. AWS Control Tower lifecycle events extend automation across the organization. It reduces or removes the need to perform manual configuration of resources after account provisioning.  
