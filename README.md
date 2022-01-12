@@ -79,4 +79,4 @@ After the stack is created, you can review the deployed EventBridge rule in the 
     "eventName": ["CreateManagedAccount"]
   }
 }
-''''
+'''
