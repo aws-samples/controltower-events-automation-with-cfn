@@ -72,24 +72,10 @@ Next, deploy the stack using the .yaml template in the repository.
 
 After the stack is created, you can review the deployed EventBridge rule in the EventBridge console (https://console.aws.amazon.com/events/home?region=us-east-1#/). The rule, which is named VPCTaggingHub-Rule, has the following event pattern:
 
-'''json
 {
-  "indent_size": "4",
-  "indent_char": " ",
-  "max_preserve_newlines": "5",
-  "preserve_newlines": true,
-  "keep_array_indentation": false,
-  "break_chained_methods": false,
-  "indent_scripts": "normal",
-  "brace_style": "collapse",
-  "space_before_conditional": true,
-  "unescape_strings": false,
-  "jslint_happy": false,
-  "end_with_newline": false,
-  "wrap_line_length": "0",
-  "indent_inner_html": false,
-  "comma_first": false,
-  "e4x": false,
-  "indent_empty_lines": false
+  "source": ["aws.controltower"],
+  "detail-type": ["AWS Service Event via CloudTrail"],
+  "detail": {
+    "eventName": ["CreateManagedAccount"]
+  }
 }
-'''
