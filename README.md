@@ -44,3 +44,6 @@ The following points summarize the workflow and the resources deployed:
 2. The AWS Lambda function assumes the ControlTowerExecutionRole created with the new account to tag resources in the account.
 3. The CloudFormation template also deploys an Amazon Simple Queue Service (Amazon SQS) (https://aws.amazon.com/sqs/) dead-letter queue to receive EventBridge and AWS Lambda failure messages.
 
+
+
+![aws-control-tower-lifecycle-events](https://user-images.githubusercontent.com/83367938/149060901-2fb3e518-fae7-4983-a1ad-8bded2e646f1.png)
