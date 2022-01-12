@@ -44,6 +44,39 @@ For the deployment, you must have the following:
 * An AWS account. If you don’t have an AWS account, sign up at https://aws.amazon.com (https://aws.amazon.com/). You must have administrative credentials to this account. This is the account referred to as “Management account” in Figure 1.
 * An AWS Control Tower landing zone in the AWS account. For instructions, see AWS Control Tower – Set up & Govern a Multi-Account AWS Environment (https://aws.amazon.com/blogs/aws/aws-control-tower-set-up-govern-a-multi-account-aws-environment/).
 
+## Walkthrough
+
+### Step 1: Prepare your environment
+To prepare your environment for the walkthrough, do the following:
+
+1. Download the GitHub repository (https://github.com/rickaws/vpc-tagging-ct-lifecycle-events) I’ve prepared.
+2. Sign in to your AWS account that contains the AWS Control Tower landing zone, configured previously. Select the AWS Region where AWS Control Tower is deployed in the top toolbar.
+3. Open the Amazon S3 console (https://console.aws.amazon.com/s3/home).
+4. Create a new S3 bucket (https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) in the Region in which AWS Control Tower is deployed. Give the bucket a unique name (for example, your 12-digit AWS account number) and make a note of it.
+5. Upload AutomatedTaggingLambda.zip from the *Lambda* folder of the repository to the new S3 bucket.
 
 
+### Step 2: Deploy the automation stack
+Next, deploy the stack using the .yaml template in the repository.
 
+1. Open the CloudFormation console (https://console.aws.amazon.com/cloudfront/home?). Select the Region where AWS Control Tower is deployed from the top toolbar.
+2. On the *Stacks* page, choose *Create stack*, then choose *With new resources (standard)*.
+3. On the *Create stack* page, in the *Specify template* section, choose *Upload a template* file.
+4. Choose *Choose file*. Select vpc-tagging-ct-lifecycle-stack.yml in the *CloudFormation* folder of the repository. Then choose *Next*.
+5. On the *Specify stack details* page, enter a stack name. You can keep or edit the default event bus name. For *S3BucketName*, enter the name of the S3 bucket you created previously. For *S3LambdaZipName*, enter AutomatedTaggingLambda.zip. Then choose *Next*.
+6. On the *Configure stack options* page, choose *Next*.
+7. On the *Review* page, review the parameters and select *I acknowledge that AWS CloudFormation might create IAM resources with custom names*.
+8. Choose *Create stack*.
+
+### Step 3. Review the EventBridge rule
+
+After the stack is created, you can review the deployed EventBridge rule in the EventBridge console (https://console.aws.amazon.com/events/home?region=us-east-1#/). The rule, which is named VPCTaggingHub-Rule, has the following event pattern:
+'''json
+{
+  "source": ["aws.controltower"],
+  "detail-type": ["AWS Service Event via CloudTrail"],
+  "detail": {
+    "eventName": ["CreateManagedAccount"]
+  }
+}
+''''
