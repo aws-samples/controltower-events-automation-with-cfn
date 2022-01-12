@@ -141,7 +141,7 @@ To avoid incurring future charges, delete the resources you created during the w
 
 To decommission or remove accounts you created with Account Factory during testing, see Unmanaging a Member Account (https://docs.aws.amazon.com/controltower/latest/userguide/account-factory.html?icmpid=docs_ctower_console#unmanage-account).
 
-##Conclusion
+## Conclusion
 In this post, I explained how to use AWS Control Tower lifecycle events to automate the tagging of VPC resources in a new account created with AWS Control Tower.
 
 I invite you to adapt the AWS Lambda function I’ve provided in my GitHub repository (https://github.com/aws-samples/controltower-events-automation-with-cfn/tree/main/lambda). Edit the Python code to customize tagging standards. Or, program it to automate a task other than tagging. For an example of an AWS Solution Implementation that also uses CloudFormation templates to customize landing zones, see Customizations for AWS Control Tower (https://aws.amazon.com/solutions/implementations/customizations-for-aws-control-tower/?did=sl_card&trk=sl_card). Let me know your questions or findings in the comments, and have fun!
