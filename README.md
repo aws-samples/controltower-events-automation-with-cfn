@@ -31,8 +31,9 @@ AWS  services:
                       Amazon EventBridge
                       AWS Lambda
 ## Overview
+![aws-control-tower-lifecycle-events](https://user-images.githubusercontent.com/83367938/149060901-2fb3e518-fae7-4983-a1ad-8bded2e646f1.png)
 
-[Figure 1](diagram/aws-control-tower-lifecycle-events.png) shows the architecture that you deployed in the walkthrough. In the diagram, “Management account” is where the CloudFormation template is deployed. “New account” is the account created by Account Factory.
+The diagram above shows the architecture that you deployed in the walkthrough. In the diagram, “Management account” is where the CloudFormation template is deployed. “New account” is the account created by Account Factory.
 
 The following points summarize the workflow and the resources deployed:
 
@@ -46,4 +47,4 @@ The following points summarize the workflow and the resources deployed:
 
 
 
-![aws-control-tower-lifecycle-events](https://user-images.githubusercontent.com/83367938/149060901-2fb3e518-fae7-4983-a1ad-8bded2e646f1.png)
+
