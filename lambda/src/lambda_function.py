@@ -129,8 +129,7 @@ def lambda_handler(event, context):
                             LOGGER.info("VPC_ID Match - Labelling Subnet " + subnet['SubnetId'] + " as " + subnet_name)
                         
                         else:
-                            LOGGER.error("Subnets not avaialble or does not match Control Tower VPC: " + vpc_id)
-
+                            LOGGER.error("Subnets not available or does not match Control Tower VPC: " + vpc_id)
                 else:
                     LOGGER.info("No subnet(s) found for VPC" + vpc_id + " in " + region)       
                 
@@ -151,8 +150,7 @@ def lambda_handler(event, context):
                         LOGGER.info("VPC_ID Match - Labelling Route Table " + route_table['RouteTableId'] + " as " + route_table_name)
                         
                     else:
-                        LOGGER.error("Route Table VPC not avaialble or does not match Control Tower VPC: " + vpc_id)
-    
+                        LOGGER.error("Route Table VPC not available or does not match Control Tower VPC: " + vpc_id)
                 else:
                     LOGGER.info("No route table found for VPC" + vpc_id + " in " + region)             
                     
@@ -173,8 +171,7 @@ def lambda_handler(event, context):
                         LOGGER.info("VPC_ID Match - Labelling Internet Gateway " + internet_gw['InternetGatewayId'] + " as " + internet_gw_name)
                         
                     else:
-                        LOGGER.error("Internet Gateway not avaialble or does not match Control Tower VPC: " + vpc_id)
-                
+                        LOGGER.error("Internet Gateway not available or does not match Control Tower VPC: " + vpc_id)
                 else:
                     LOGGER.info("No Internet Gateway found for VPC" + vpc_id + " in " + region)               
                     
@@ -196,7 +193,7 @@ def lambda_handler(event, context):
                         LOGGER.info("VPC_ID Match - Labelling NACL " + nacl['NetworkAclId'] + " as " + nacl_name)
                         
                     else:
-                        LOGGER.error("NACL not avaialble or does not match Control Tower VPC: " + vpc_id)
+                        LOGGER.error("NACL not available or does not match Control Tower VPC: " + vpc_id)
                 else:
                     LOGGER.info("No NACLS found for VPC" + vpc_id + " in " + region)                
                     
@@ -222,8 +219,7 @@ def lambda_handler(event, context):
                             nat_gw_tag_response = ec2_client.create_tags(Resources=[nat_gw['NatGatewayId']], Tags=[{'Key':'Name', 'Value':nat_gw_name}])
                             LOGGER.info("VPC_ID Match - Labelling NAT Gateway " + nat_gw['NatGatewayId'] + " as " + nat_gw_name)
                         else:
-                            LOGGER.error("NAT Gateway not avaialble or does not match Control Tower VPC: " + vpc_id)
-                        
+                            LOGGER.error("NAT Gateway not available or does not match Control Tower VPC: " + vpc_id)                        
                 else:
                     LOGGER.info("No NAT Gateways found for VPC" + vpc_id + " in " + region)
                 
