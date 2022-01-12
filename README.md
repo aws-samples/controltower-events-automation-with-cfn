@@ -1,4 +1,4 @@
-### Automate VPC tagging with AWS Control Tower lifecycle events
+# Automate VPC tagging with AWS Control Tower lifecycle events
 
 ## Security
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
