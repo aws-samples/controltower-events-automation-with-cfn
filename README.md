@@ -130,3 +130,18 @@ Run the AWS Lambda function manually to tag resources in an existing AWS account
 7. Choose *Save changes*.
 8. Choose *Test*. The function can take 2–3 minutes to run, depending on the number of Regions with VPCs deployed with AWS Control Tower. Test results appear on the *Test* tab, with resources labeled by the function listed in the *Log output* field.
 9. To see the tags on resources in the target account, sign in to the account and open the VPC console (https://console.aws.amazon.com/vpc/home?region=us-east-1).
+
+## Cleanup
+  
+To avoid incurring future charges, delete the resources you created during the walkthrough. Follow these steps:
+
+1. Open the CloudFormation console (https://console.aws.amazon.com/cloudformation).
+2. On the *Stacks* page, select the stack you created during the walkthrough.
+3. Choose *Delete*.
+
+To decommission or remove accounts you created with Account Factory during testing, see Unmanaging a Member Account (https://docs.aws.amazon.com/controltower/latest/userguide/account-factory.html?icmpid=docs_ctower_console#unmanage-account).
+
+##Conclusion
+In this post, I explained how to use AWS Control Tower lifecycle events to automate the tagging of VPC resources in a new account created with AWS Control Tower.
+
+I invite you to adapt the AWS Lambda function I’ve provided in my GitHub repository (https://github.com/rickaws/vpc-tagging-ct-lifecycle-events). Edit the Python code to customize tagging standards. Or, program it to automate a task other than tagging. For an example of an AWS Solution Implementation that also uses CloudFormation templates to customize landing zones, see Customizations for AWS Control Tower (https://aws.amazon.com/solutions/implementations/customizations-for-aws-control-tower/?did=sl_card&trk=sl_card). Let me know your questions or findings in the comments, and have fun!
