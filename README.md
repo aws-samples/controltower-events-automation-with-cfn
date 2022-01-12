@@ -72,7 +72,7 @@ Next, deploy the stack using the .yaml template in the repository.
 
 After the stack is created, you can review the deployed EventBridge rule in the EventBridge console (https://console.aws.amazon.com/events/home?region=us-east-1#/). The rule, which is named VPCTaggingHub-Rule, has the following event pattern:
 
-'''json
+'''
 {
   "source": ["aws.controltower"],
   "detail-type": ["AWS Service Event via CloudTrail"],
@@ -105,7 +105,7 @@ Run the AWS Lambda function manually to tag resources in an existing AWS account
 5. Enter an event name (for example, test). 
 6. Copy and paste the following code into the body of the event. Replace <<MGMT_ACCOUNT_ID>> with the 12-digit account number for your management AWS account. Replace <<FIRST_ACCOUNT_ID>> with the account number of the AWS account that you want to tag.
 
-  '''json
+  '''
 {
   "detail-type": "AWS Service Event via CloudTrail",
   "source": "aws.controltower",
