@@ -1,6 +1,4 @@
-## My Project
-
-TODO: Fill this README out!
+## Automate VPC tagging with AWS Control Tower lifecycle events
 
 Be sure to:
 
