@@ -1,0 +1,111 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "Stack for creating CT Tagging Solution using Control Tower Lifecycle Events (qs-1shsj9fo6)"
+
+Parameters:
+  
+  S3BucketName:
+    Type: String
+    Description: Enter the Name of the existing S3 bucket where the Lambda code was uploaded
+
+  S3LambdaZipName: 
+    Type: String
+    Description: Enter file name of Lambda Zip - i.e. ControlTowerLifeCycleEventLambda-AutomatedVPCTagging.zip 
+
+Resources:
+
+  VPCTaggingLambdaRole:
+    DependsOn: VPCTaggingLambdaDLQ
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: VPCTaggingLambdaRole
+      Description: Role used by Lambda to assume VPCTaggingRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Policies:
+      - PolicyName: VPCTaggingLambdaRoleAssumePolicy
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+          - Effect: "Allow"
+            Action:
+              - "sts:AssumeRole"
+            Resource: 
+              - "arn:aws:iam::*:role/AWSControlTowerExecution"
+      - PolicyName: VPCTaggingLambdaRoleSQSPolicy
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+          - Effect: "Allow"
+            Action:
+              - "sqs:SendMessage"
+            Resource: 
+              - !GetAtt VPCTaggingLambdaDLQ.Arn
+      ManagedPolicyArns:
+              - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+            
+  VPCTaggingLambdaDLQ: 
+    Type: AWS::SQS::Queue
+    Properties: 
+        QueueName: VPCTaggingLambdaDLQ 
+        
+  VPCTaggingEventBridgeDLQ: 
+    Type: AWS::SQS::Queue
+    Properties: 
+        QueueName: VPCTaggingEventBridgeDLQ    
+              
+  VPCTaggingLambdaFunction:
+    DependsOn: VPCTaggingLambdaDLQ
+    Type: "AWS::Lambda::Function"
+    Properties:
+      FunctionName: !Sub ${AWS::AccountId}-CTLifeCycleEventLambda-AutomatedVPCTagging
+      Description: VPCTagging - Function to handle incoming events and tag VPC resources inside new account
+      Handler: "lambda_function.lambda_handler"
+      Role: !GetAtt VPCTaggingLambdaRole.Arn
+      Code:
+        S3Bucket: !Ref S3BucketName
+        S3Key: !Ref S3LambdaZipName
+      Runtime: "python3.7"
+      MemorySize: 128
+      Timeout: 300
+      ReservedConcurrentExecutions: 500
+      DeadLetterConfig:
+        TargetArn: !GetAtt VPCTaggingLambdaDLQ.Arn
+  
+  VPCTaggingLambdaPermission:
+    DependsOn: VPCTaggingTagHubRule
+    Type: AWS::Lambda::Permission
+    Properties: 
+      Action: lambda:InvokeFunction
+      FunctionName: !Sub ${AWS::AccountId}-CTLifeCycleEventLambda-AutomatedVPCTagging
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt VPCTaggingTagHubRule.Arn
+
+  VPCTaggingTagHubRule:
+    DependsOn:
+      - VPCTaggingEventBridgeDLQ
+    Type: AWS::Events::Rule
+    Properties:
+      Name: VPCTagging-HubRule
+      Description: VPCTagging Trigger for Lambda to execute tagging across VPC resources for new account
+      EventPattern:
+        {
+          "source": ["aws.controltower"],
+          "detail-type": ["AWS Service Event via CloudTrail"],
+          "detail": {
+            "eventName": ["CreateManagedAccount"]
+          }
+        }
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt VPCTaggingLambdaFunction.Arn
+          Id: "TagCreateUpdateHubTrigger"
+          DeadLetterConfig:
+            Arn: !GetAtt VPCTaggingEventBridgeDLQ.Arn
