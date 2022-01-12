@@ -1,16 +1,9 @@
-## Automate VPC tagging with AWS Control Tower lifecycle events
-
-Be sure to:
-
-* Change the title in this README
-* Edit your repository description on GitHub
+### Automate VPC tagging with AWS Control Tower lifecycle events
 
 ## Security
-
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
 
 ## License
-
 This library is licensed under the MIT-0 License. See the LICENSE file.
 
 ## Introduction
@@ -44,6 +37,12 @@ The following points summarize the workflow and the resources deployed:
 1. EventBridge receives the event and matches the event pattern to a rule. The rule in this case invokes an AWS Lambda function.
 2. The AWS Lambda function assumes the ControlTowerExecutionRole created with the new account to tag resources in the account.
 3. The CloudFormation template also deploys an Amazon Simple Queue Service (Amazon SQS) (https://aws.amazon.com/sqs/) dead-letter queue to receive EventBridge and AWS Lambda failure messages.
+
+## Prerequisites
+For the deployment, you must have the following:
+
+* An AWS account. If you don’t have an AWS account, sign up at https://aws.amazon.com (https://aws.amazon.com/). You must have administrative credentials to this account. This is the account referred to as “Management account” in Figure 1.
+* An AWS Control Tower landing zone in the AWS account. For instructions, see AWS Control Tower – Set up & Govern a Multi-Account AWS Environment (https://aws.amazon.com/blogs/aws/aws-control-tower-set-up-govern-a-multi-account-aws-environment/).
 
 
 
