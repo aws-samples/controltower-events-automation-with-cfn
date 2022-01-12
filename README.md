@@ -72,6 +72,7 @@ Next, deploy the stack using the .yaml template in the repository.
 
 After the stack is created, you can review the deployed EventBridge rule in the EventBridge console (https://console.aws.amazon.com/events/home?region=us-east-1#/). The rule, which is named VPCTaggingHub-Rule, has the following event pattern:
 
+'''json
 {
   "source": ["aws.controltower"],
   "detail-type": ["AWS Service Event via CloudTrail"],
@@ -79,3 +80,53 @@ After the stack is created, you can review the deployed EventBridge rule in the 
     "eventName": ["CreateManagedAccount"]
   }
 }
+'''
+
+### Step 4. Test the automation
+There are two methods to test the automation and demonstrate the tagging carried out by the AWS Lambda function. You can emulate a real-world scenario in which you provision an account using AWS Control Tower Account Factory. Or, you can run a test set using JSON parameters that would be passed as part of a typical CreateManagedAccount lifecycle event. In other words, you can manually invoke the AWS Lambda function to tag resources in an existing account. For this second option, you must have previously created an account with AWS Control Tower Account Factory.
+
+#### Method A. Test by creating a new account with Account Factory
+With this method, first create a new AWS account with Account Factory. Then, sign in to the new account to see the tags the AWS Lambda function creates automatically.
+
+1. Open the Account Factory page (https://us-west-2.console.aws.amazon.com/controltower/home/accountfactory?region=us-west-2) in the AWS Control Tower console. In the top toolbar, choose the Region where you previously deployed the AWS Control Tower landing zone.
+2. Choose *Enroll account*.
+3. Complete the *Account details* page and choose *Enroll account*. Enrollment can take up to 45 minutes. After enrollment is complete, VPCTaggingHub-Rule initiates the AWS Lambda function automatically. The function tags the VPC and its subnets, internet gateway, NAT gateway, and route table with the Region and Availability Zone.
+4. To see the results, sign in to the new account and open the VPC console (https://console.aws.amazon.com/vpc/home?region=us-east-1).
+5. Choose a resource in navigation pane. For example, to review tags for the subnets, choose *Subnets*.
+6. On the resource page, choose the *Tags* tab.
+
+##### Method B. Test by manually invoking AWS Lambda
+Run the AWS Lambda function manually to tag resources in an existing AWS account. To use this method, the AWS account to be tagged must have been created with Account Factory.
+
+1. Open the Functions page (https://console.aws.amazon.com/lambda/home?%2Ffunctions=&r=&region=us-east-1#/functions) in the AWS Lambda console. Choose the Region where the CloudFormation stack is deployed in the top toolbar.
+2. In the *Function name* column, choose <<Account-ID>>- CTLifeCycleEventLambda-AutomatedVPCTagging.
+3. On the function’s detail page, choose the *Test* tab.
+4. Choose *New event*.
+5. Enter an event name (for example, test). 
+6. Copy and paste the following code into the body of the event. Replace <<MGMT_ACCOUNT_ID>> with the 12-digit account number for your management AWS account. Replace <<FIRST_ACCOUNT_ID>> with the account number of the AWS account that you want to tag.
+
+  '''json
+{
+  "detail-type": "AWS Service Event via CloudTrail",
+  "source": "aws.controltower",
+  "account": "<<MGMT_ACCOUNT_ID>>",
+  "detail": {
+    "eventSource": "controltower.amazonaws.com",
+    "eventName": "CreateManagedAccount",
+    "recipientAccountId": "<<TEST_ACCOUNT_ID>>",
+    "serviceEventDetails": {
+      "createManagedAccountStatus": {
+        "account": {
+          "accountName": "SampleAccount",
+          "accountId": "<<MGMT_ACCOUNT_ID>>"
+        },
+        "state": "SUCCEEDED"
+      }
+    }
+  }
+}
+  '''
+  
+7. Choose *Save changes*.
+8. Choose *Test*. The function can take 2–3 minutes to run, depending on the number of Regions with VPCs deployed with AWS Control Tower. Test results appear on the *Test* tab, with resources labeled by the function listed in the *Log output* field.
+9. To see the tags on resources in the target account, sign in to the account and open the VPC console (https://console.aws.amazon.com/vpc/home?region=us-east-1).
